@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS account;
+
+CREATE TABLE user (
+username TEXT PRIMARY KEY,
+password TEXT NOT NULL
+);
+
+CREATE TABLE account (
+accnt_no INTEGER PRIMARY KEY AUTOINCREMENT,
+amnt REAL CHECK(amnt >= 0),
+username REFERENCES user(username) ON DELETE CASCADE
+);
