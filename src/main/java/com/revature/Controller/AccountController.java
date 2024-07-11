@@ -1,6 +1,7 @@
 package com.revature.Controller;
 
 import com.revature.Entity.Account;
+import com.revature.Exception.InvalidEntry;
 import com.revature.Exception.LoginFail;
 import com.revature.Service.AccountService;
 
@@ -20,10 +21,12 @@ public class AccountController {
     public Account getAccountDetails(){
         String username;
         float amt;
+        String amount;
         System.out.println("Enter the username associated with the account: ");
         username = scanner.nextLine();
         System.out.println("Enter initial amount to be deposited: ");
-        amt = scanner.nextFloat();
+        amount = scanner.nextLine();
+        amt = Float.parseFloat(amount);
         return new Account(0, amt, username);
     }
 
@@ -33,19 +36,22 @@ public class AccountController {
         System.out.println("New account number: " + registeredAccount.getAccnt_no());
     }
 
-    public void AccountService(Map<String, String> controlMap){
+    public void PromptForAccountService(Map<String, String> controlMap){
 
         System.out.println("What would you like to do?");
         System.out.println("1. Open an Account");
+        System.out.println("0. Logout");
         try{
             String action = scanner.nextLine();
             switch (action){
                 case "1":
                     register();
                     break;
+                case "0":
+                    controlMap.put("Continue Loop", "false");
             }
         }
-        catch (LoginFail e){
+        catch (InvalidEntry e){
             System.out.println(e.getMessage());
         }
     }

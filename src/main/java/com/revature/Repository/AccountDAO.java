@@ -12,20 +12,18 @@ public class AccountDAO implements AccountInterface{
 
     public Account createAccount(Account newAccountDetails){
 
-        String sql = "insert into account (amt, username) values (?, ?)";
+        String sql = "insert into account (amnt, username) values (?, ?);";
 
         try(Connection connection = DatabaseConnector.createConnection()){
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setFloat(1, newAccountDetails.getAmt());
             preparedStatement.setString(2, newAccountDetails.getUsername());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Account persistedAccount = new Account();
-            persistedAccount.setAccnt_no(resultSet.getInt("Accnt_no"));
-            persistedAccount.setAmt(resultSet.getFloat("amt"));
-            persistedAccount.setUsername(resultSet.getString("username"));
-            if(persistedAccount.getAccnt_no() > 0){
-                return persistedAccount;
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(resultSet.next()){
+                int accnt_no = (int) resultSet.getLong(1);
+                return new Account(accnt_no, newAccountDetails.getAmt(), newAccountDetails.getUsername());
             }
             throw new AccountSQLException("Account could not be created. Please try again.");
         }
@@ -45,7 +43,7 @@ public class AccountDAO implements AccountInterface{
             while (resultSet.next()){
                 Account accountRecord = new Account();
                 accountRecord.setAccnt_no(resultSet.getInt("accnt_no"));
-                accountRecord.setAmt(resultSet.getFloat("amt"));
+                accountRecord.setAmt(resultSet.getFloat("amnt"));
                 accountRecord.setUsername(resultSet.getString("username"));
                 accounts.add(accountRecord);
             }
