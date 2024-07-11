@@ -15,9 +15,9 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
-    public Account registerAccount(Account newAccountDetails){
+    public Account registerAccount(String username){
 
-        return accountDAO.createAccount(newAccountDetails);
+        return accountDAO.createAccount(username);
 
     }
 

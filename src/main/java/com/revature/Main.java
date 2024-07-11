@@ -32,7 +32,7 @@ public class Main {
                     Map<String, String> controlMap2 = new HashMap<>();
                     controlMap2.put("Continue Loop", "true");
                     while(Boolean.parseBoolean(controlMap2.get("Continue Loop"))){
-                        AccountController accountController = new AccountController(scanner, accountService);
+                        AccountController accountController = new AccountController(scanner, accountService, controlMap1.get("User"));
                         accountController.PromptForAccountService(controlMap2);
                     }
 

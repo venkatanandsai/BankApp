@@ -13,10 +13,12 @@ public class AccountController {
 
     private Scanner scanner;
     private AccountService accountService;
+    private final String accountOwner;
 
-    public AccountController(Scanner scanner, AccountService accountService) {
+    public AccountController(Scanner scanner, AccountService accountService, String accountOwner) {
         this.scanner = scanner;
         this.accountService = accountService;
+        this.accountOwner = accountOwner;
     }
 
     public int getAccountNo(){
@@ -25,28 +27,13 @@ public class AccountController {
         return Integer.parseInt(accnt_no);
     }
 
-    public Account getAccountDetails(){
-        String username;
-        float amt;
-        String amount;
-        System.out.println("Enter the username associated with the account: ");
-        username = scanner.nextLine();
-        System.out.println("Enter initial amount to be deposited: ");
-        amount = scanner.nextLine();
-        amt = Float.parseFloat(amount);
-        return new Account(0, amt, username);
-    }
-
     public void register(){
-        Account account = getAccountDetails();
-        Account registeredAccount = accountService.registerAccount(account);
+        Account registeredAccount = accountService.registerAccount(accountOwner);
         System.out.println("New account number: " + registeredAccount.getAccnt_no());
     }
 
     public void viewAllAccountsByUsername(){
-        System.out.println("Please enter the username: ");
-        String username = scanner.nextLine();
-        List<Account> accounts = accountService.getAllAccountsByUsername(username);
+        List<Account> accounts = accountService.getAllAccountsByUsername(accountOwner);
         for(Account account : accounts){
             System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
         }
