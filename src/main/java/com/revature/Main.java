@@ -4,7 +4,6 @@ import com.revature.Controller.AccountController;
 import com.revature.Controller.UserController;
 import com.revature.Repository.AccountDAO;
 import com.revature.Repository.UserDAO;
-import com.revature.Repository.UserInterface;
 import com.revature.Service.AccountService;
 import com.revature.Service.UserService;
 
