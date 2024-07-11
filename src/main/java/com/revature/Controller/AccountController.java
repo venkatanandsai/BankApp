@@ -5,6 +5,7 @@ import com.revature.Exception.InvalidEntry;
 import com.revature.Exception.LoginFail;
 import com.revature.Service.AccountService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -36,16 +37,29 @@ public class AccountController {
         System.out.println("New account number: " + registeredAccount.getAccnt_no());
     }
 
+    public void viewAllAccountsByUsername(){
+        System.out.println("Please enter the username: ");
+        String username = scanner.nextLine();
+        List<Account> accounts = accountService.getAllAccountsByUsername(username);
+        for(Account account : accounts){
+            System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
+        }
+    }
+
     public void PromptForAccountService(Map<String, String> controlMap){
 
         System.out.println("What would you like to do?");
         System.out.println("1. Open an Account");
+        System.out.println("2. To view all your accounts");
         System.out.println("0. Logout");
         try{
             String action = scanner.nextLine();
             switch (action){
                 case "1":
                     register();
+                    break;
+                case "2":
+                    viewAllAccountsByUsername();
                     break;
                 case "0":
                     controlMap.put("Continue Loop", "false");

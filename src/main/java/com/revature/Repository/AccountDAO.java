@@ -34,11 +34,34 @@ public class AccountDAO implements AccountInterface{
 
     public List<Account> getAllAccounts(){
 
-        String sql = "select * from account";
+        String sql = "select * from account;";
         try(Connection connection = DatabaseConnector.createConnection()){
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            List<Account> accounts = new ArrayList<>();
+            while (resultSet.next()){
+                Account accountRecord = new Account();
+                accountRecord.setAccnt_no(resultSet.getInt("accnt_no"));
+                accountRecord.setAmt(resultSet.getFloat("amnt"));
+                accountRecord.setUsername(resultSet.getString("username"));
+                accounts.add(accountRecord);
+            }
+            return accounts;
+        }
+        catch (SQLException e){
+            throw new AccountSQLException(e.getMessage());
+        }
+    }
+
+    public List<Account> getAllAccountsByUsername(String username){
+
+        String sql = "select * from account where username = ?;";
+        try(Connection connection = DatabaseConnector.createConnection()){
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
             List<Account> accounts = new ArrayList<>();
             while (resultSet.next()){
                 Account accountRecord = new Account();

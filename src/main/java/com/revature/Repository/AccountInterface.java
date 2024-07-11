@@ -8,5 +8,6 @@ public interface AccountInterface {
 
     Account createAccount(Account newAccountDetails);
     List<Account> getAllAccounts();
+    List<Account> getAllAccountsByUsername(String username);
 
 }
