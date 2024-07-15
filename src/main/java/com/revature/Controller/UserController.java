@@ -2,6 +2,8 @@ package com.revature.Controller;
 
 import com.revature.Entity.User;
 import com.revature.Exception.LoginFail;
+import com.revature.Exception.RegistrationFail;
+import com.revature.Exception.UserSQLException;
 import com.revature.Service.UserService;
 
 import java.util.Map;
@@ -58,7 +60,7 @@ public class UserController {
                     controlMap.put("Continue Loop", "false");
             }
         }
-        catch (LoginFail e){
+        catch (LoginFail | RegistrationFail | UserSQLException e){
             System.out.println(e.getMessage());
         }
 

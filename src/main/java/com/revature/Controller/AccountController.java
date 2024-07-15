@@ -1,7 +1,7 @@
 package com.revature.Controller;
 
 import com.revature.Entity.Account;
-import com.revature.Exception.InvalidEntry;
+import com.revature.Exception.*;
 import com.revature.Service.AccountService;
 
 import java.util.List;
@@ -125,7 +125,7 @@ public class AccountController {
                     controlMap.put("Continue Loop", "false");
             }
         }
-        catch (InvalidEntry e){
+        catch (InvalidEntry | notEnoughBalance | thereIsStillBalance | typeInvalidException | AccountSQLException e){
             System.out.println(e.getMessage());
         }
     }
