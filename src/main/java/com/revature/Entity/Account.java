@@ -13,6 +13,32 @@ public class Account implements Serializable {
 
     public Account(){}
 
+    public Account(String username){
+        this.username = username;
+    }
+
+    public Account(int accnt_no, String username) {
+        this.accnt_no = accnt_no;
+        this.username = username;
+    }
+
+    public Account(String type, String username) {
+        this.username = username;
+        this.type = type;
+    }
+
+    public Account(int accnt_no, float amt, String username) {
+        this.accnt_no = accnt_no;
+        this.amt = amt;
+        this.username = username;
+    }
+
+    public Account(int accnt_no, String username, String cousername) {
+        this.accnt_no = accnt_no;
+        this.username = username;
+        this.cousername = cousername;
+    }
+
     public Account(int accnt_no, float amt, String username, String type) {
         this.accnt_no = accnt_no;
         this.amt = amt;

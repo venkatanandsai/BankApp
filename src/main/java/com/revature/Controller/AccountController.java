@@ -34,32 +34,36 @@ public class AccountController {
 
     public void register(){
         String type = getType();
-        Account registeredAccount = accountService.registerAccount(accountOwner, type);
+        Account account = new Account(type, accountOwner);
+        Account registeredAccount = accountService.registerAccount(account);
         System.out.println("New account number: " + registeredAccount.getAccnt_no());
     }
 
     public void viewAllAccountsByUsername(){
-        List<Account> accounts = accountService.getAllAccountsByUsername(accountOwner);
+        Account useraccnt = new Account(accountOwner);
+        List<Account> accounts = accountService.getAllAccountsByUsername(useraccnt);
         for(Account account : accounts){
             System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt() + " Type: "
-            + account.getType());
+            + account.getType() + " Joint username: " + account.getCoUsername());
         }
     }
 
     public void viewAccountByAccnt_no(){
         int accnt_no = getAccountNo();
-        Account account = accountService.getAccountByaccnt_no(accnt_no, accountOwner);
-        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt() + " Type: "
-        + account.getType());
+        Account account = new Account(accnt_no, accountOwner);
+        Account retaccount = accountService.getAccountByaccnt_no(account);
+        System.out.println("Account number: " + retaccount.getAccnt_no() + " Amount: " + retaccount.getAmt() + " Type: "
+        + retaccount.getType() + " Joint username: " + retaccount.getCoUsername());
     }
 
     public void registerJointUser(){
         int accnt_no = getAccountNo();
         System.out.println("Enter the joint username: ");
         String cousername = scanner.nextLine();
-        Account account = accountService.registerJointUser(accnt_no, accountOwner, cousername);
-        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt() + " Type: "
-                + account.getType() + "Joint username: " + account.getCoUsername());
+        Account account = new Account(accnt_no, accountOwner, cousername);
+        Account retaccount = accountService.registerJointUser(account);
+        System.out.println("Account number: " + retaccount.getAccnt_no() + " Amount: " + retaccount.getAmt() + " Type: "
+                + retaccount.getType() + " Joint username: " + retaccount.getCoUsername());
     }
 
     public void depositAmount(){
@@ -67,8 +71,9 @@ public class AccountController {
         System.out.println("Please enter the amount to be deposited: ");
         String amt = scanner.nextLine();
         float amt_flt = Float.parseFloat(amt);
-        Account account = accountService.depositByAccnt_no(amt_flt, accnt_no, accountOwner);
-        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
+        Account account = new Account(accnt_no, amt_flt, accountOwner);
+        Account retaccount = accountService.depositByAccnt_no(account);
+        System.out.println("Account number: " + retaccount.getAccnt_no() + " Amount: " + retaccount.getAmt());
     }
 
     public void withdrawAmount(){
@@ -76,14 +81,16 @@ public class AccountController {
         System.out.println("Please enter the amount to be withdrawn: ");
         String amt = scanner.nextLine();
         float amt_flt = Float.parseFloat(amt);
-        Account account = accountService.withdrawByAccnt_no(amt_flt, accnt_no, accountOwner);
-        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
+        Account account = new Account(accnt_no, amt_flt, accountOwner);
+        Account retaccount = accountService.withdrawByAccnt_no(account);
+        System.out.println("Account number: " + retaccount.getAccnt_no() + " Amount: " + retaccount.getAmt());
     }
 
     public void closeAccount(){
         int accnt_no = getAccountNo();
-        accountService.deleteAccountByAccnt_no(accnt_no, accountOwner);
-        System.out.println("Account with account number: " + accnt_no + " has been closed.");
+        Account account = new Account(accnt_no, accountOwner);
+        accountService.deleteAccountByAccnt_no(account);
+        System.out.println("Account with account number: " + account.getAccnt_no() + " has been closed.");
     }
 
     public void PromptForAccountService(Map<String, String> controlMap){

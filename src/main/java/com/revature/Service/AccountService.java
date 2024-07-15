@@ -16,67 +16,71 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
-    public Account registerAccount(String username, String type){
-        if(type.equals("1")){
+    public Account registerAccount(Account account){
+        if(account.getType().equals("1")){
             String accnt_type = "CHECKING";
             float amt = 30.0f;
-            return accountDAO.createAccount(amt, username, accnt_type);
+            account.setType(accnt_type);
+            account.setAmt(amt);
+            return accountDAO.createAccount(account);
         }
-        else if(type.equals("2")){
+        else if(account.getType().equals("2")){
             String accnt_type = "SAVINGS";
             float amt = 50.0f;
-            return accountDAO.createAccount(amt, username, accnt_type);
+            account.setType(accnt_type);
+            account.setAmt(amt);
+            return accountDAO.createAccount(account);
         }
         throw new typeInvalidException("Invalid type. Please try again.");
     }
 
-    public List<Account> getAllAccountsByUsername(String username){
+    public List<Account> getAllAccountsByUsername(Account account){
 
-        return accountDAO.getAllAccountsByUsername(username);
-
-    }
-
-    public Account getAccountByaccnt_no(int accnt_no, String username){
-
-        return accountDAO.getAccountByAccnt_no(accnt_no, username);
+        return accountDAO.getAllAccountsByUsername(account);
 
     }
 
-    public Account registerJointUser(int accnt_no, String username, String cousername){
+    public Account getAccountByaccnt_no(Account account){
 
-        accountDAO.updateCousername(accnt_no, username, cousername);
-        return accountDAO.getAccountByAccnt_no(accnt_no, username);
-
-    }
-
-    public Account depositByAccnt_no(float amt, int accnt_no, String username){
-
-        Account account = accountDAO.getAccountByAccnt_no(accnt_no, username);
-        float balance = account.getAmt();
-        float new_amt = balance + amt;
-        accountDAO.updateAmt(new_amt, accnt_no, username);
-        return accountDAO.getAccountByAccnt_no(accnt_no, username);
+        return accountDAO.getAccountByAccnt_no(account);
 
     }
 
-    public Account withdrawByAccnt_no(float amt, int accnt_no, String username) throws notEnoughBalance{
+    public Account registerJointUser(Account account){
 
-        Account account = accountDAO.getAccountByAccnt_no(accnt_no, username);
-        float balance = account.getAmt();
-        if(balance >= amt){
-            float new_amt = balance - amt;
-            accountDAO.updateAmt(new_amt, accnt_no, username);
-            return accountDAO.getAccountByAccnt_no(accnt_no, username);
+        accountDAO.updateCousername(account);
+        return accountDAO.getAccountByAccnt_no(account);
+
+    }
+
+    public Account depositByAccnt_no(Account account){
+
+        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        float balance =retaccount.getAmt();
+        retaccount.setAmt(balance + account.getAmt());
+        accountDAO.updateAmt(retaccount);
+        return accountDAO.getAccountByAccnt_no(retaccount);
+
+    }
+
+    public Account withdrawByAccnt_no(Account account) throws notEnoughBalance{
+
+        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        float balance = retaccount.getAmt();
+        if(balance >= account.getAmt()){
+            retaccount.setAmt(balance - account.getAmt());
+            accountDAO.updateAmt(retaccount);
+            return accountDAO.getAccountByAccnt_no(retaccount);
         }
         throw new notEnoughBalance("Not enough balance. Try again with different amount.");
     }
 
-    public void deleteAccountByAccnt_no(int accnt_no, String username){
+    public void deleteAccountByAccnt_no(Account account){
 
-        Account account = accountDAO.getAccountByAccnt_no(accnt_no, username);
-        float balance = account.getAmt();
+        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        float balance = retaccount.getAmt();
         if(balance == 0.0){
-            accountDAO.deleteAccountByAccnt_no(accnt_no, username);
+            accountDAO.deleteAccountByAccnt_no(account);
         }
         else{
             throw new thereIsStillBalance("Withdraw the balance before closing the account.");
