@@ -8,13 +8,24 @@ public class Account implements Serializable {
     private int accnt_no;
     private float amt;
     private String username;
+    private String type;
+    private String cousername;
 
     public Account(){}
 
-    public Account(int accnt_no, float amt, String username) {
+    public Account(int accnt_no, float amt, String username, String type) {
         this.accnt_no = accnt_no;
         this.amt = amt;
         this.username = username;
+        this.type = type;
+    }
+
+    public Account(int accnt_no, float amt, String username, String type, String cousername) {
+        this.accnt_no = accnt_no;
+        this.amt = amt;
+        this.username = username;
+        this.type = type;
+        this.cousername = cousername;
     }
 
     public int getAccnt_no() {
@@ -39,6 +50,22 @@ public class Account implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCoUsername() {
+        return cousername;
+    }
+
+    public void setCoUsername(String cousername) {
+        this.cousername = cousername;
     }
 
     @Override

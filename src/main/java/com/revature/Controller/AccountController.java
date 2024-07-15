@@ -2,7 +2,6 @@ package com.revature.Controller;
 
 import com.revature.Entity.Account;
 import com.revature.Exception.InvalidEntry;
-import com.revature.Exception.LoginFail;
 import com.revature.Service.AccountService;
 
 import java.util.List;
@@ -27,22 +26,40 @@ public class AccountController {
         return Integer.parseInt(accnt_no);
     }
 
+    public String getType(){
+        System.out.println("Enter the type of account: ");
+        System.out.println("1 for Checking and 2 for Savings");
+        return scanner.nextLine();
+    }
+
     public void register(){
-        Account registeredAccount = accountService.registerAccount(accountOwner);
+        String type = getType();
+        Account registeredAccount = accountService.registerAccount(accountOwner, type);
         System.out.println("New account number: " + registeredAccount.getAccnt_no());
     }
 
     public void viewAllAccountsByUsername(){
         List<Account> accounts = accountService.getAllAccountsByUsername(accountOwner);
         for(Account account : accounts){
-            System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
+            System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt() + " Type: "
+            + account.getType());
         }
     }
 
     public void viewAccountByAccnt_no(){
         int accnt_no = getAccountNo();
-        Account account = accountService.getAccountByaccnt_no(accnt_no);
-        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
+        Account account = accountService.getAccountByaccnt_no(accnt_no, accountOwner);
+        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt() + " Type: "
+        + account.getType());
+    }
+
+    public void registerJointUser(){
+        int accnt_no = getAccountNo();
+        System.out.println("Enter the joint username: ");
+        String cousername = scanner.nextLine();
+        Account account = accountService.registerJointUser(accnt_no, accountOwner, cousername);
+        System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt() + " Type: "
+                + account.getType() + "Joint username: " + account.getCoUsername());
     }
 
     public void depositAmount(){
@@ -50,7 +67,7 @@ public class AccountController {
         System.out.println("Please enter the amount to be deposited: ");
         String amt = scanner.nextLine();
         float amt_flt = Float.parseFloat(amt);
-        Account account = accountService.depositByAccnt_no(amt_flt, accnt_no);
+        Account account = accountService.depositByAccnt_no(amt_flt, accnt_no, accountOwner);
         System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
     }
 
@@ -59,13 +76,13 @@ public class AccountController {
         System.out.println("Please enter the amount to be withdrawn: ");
         String amt = scanner.nextLine();
         float amt_flt = Float.parseFloat(amt);
-        Account account = accountService.withdrawByAccnt_no(amt_flt, accnt_no);
+        Account account = accountService.withdrawByAccnt_no(amt_flt, accnt_no, accountOwner);
         System.out.println("Account number: " + account.getAccnt_no() + " Amount: " + account.getAmt());
     }
 
     public void closeAccount(){
         int accnt_no = getAccountNo();
-        accountService.deleteAccountByAccnt_no(accnt_no);
+        accountService.deleteAccountByAccnt_no(accnt_no, accountOwner);
         System.out.println("Account with account number: " + accnt_no + " has been closed.");
     }
 
@@ -75,10 +92,11 @@ public class AccountController {
         System.out.println("1. To Open an Account");
         System.out.println("2. To view all your accounts");
         System.out.println("3. To view one of your accounts");
-        System.out.println("4. To deposit money into one of your accounts");
-        System.out.println("5. To withdraw money from one of your accounts");
-        System.out.println("6. To close an Account");
-        System.out.println("7. Logout");
+        System.out.println("4. To register a joint user for one of your accounts");
+        System.out.println("5. To deposit money into one of your accounts");
+        System.out.println("6. To withdraw money from one of your accounts");
+        System.out.println("7. To close an Account");
+        System.out.println("l. Logout");
         try{
             String action = scanner.nextLine();
             switch (action){
@@ -92,15 +110,18 @@ public class AccountController {
                     viewAccountByAccnt_no();
                     break;
                 case "4":
-                    depositAmount();
+                    registerJointUser();
                     break;
                 case "5":
-                    withdrawAmount();
+                    depositAmount();
                     break;
                 case "6":
-                    closeAccount();
+                    withdrawAmount();
                     break;
                 case "7":
+                    closeAccount();
+                    break;
+                case "l":
                     controlMap.put("Continue Loop", "false");
             }
         }

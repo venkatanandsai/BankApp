@@ -9,5 +9,7 @@ password TEXT NOT NULL
 CREATE TABLE account (
 accnt_no INTEGER PRIMARY KEY AUTOINCREMENT,
 amnt REAL CHECK(amnt >= 0),
-username REFERENCES user(username) ON DELETE CASCADE
+username NOT NULL REFERENCES user(username) ON DELETE CASCADE,
+cousername REFERENCES user(username) ON DELETE SET NULL,
+type TEXT CHECK(type IN ('CHECKING', 'SAVINGS'))
 );
