@@ -50,13 +50,13 @@ public class AccountService {
     public Account registerJointUser(Account account){
 
         accountDAO.updateCousername(account);
-        return accountDAO.getAccountByAccnt_no(account);
+        return getAccountByaccnt_no(account);
 
     }
 
     public Account depositByAccnt_no(Account account){
 
-        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        Account retaccount = getAccountByaccnt_no(account);
         float balance =retaccount.getAmt();
         retaccount.setAmt(balance + account.getAmt());
         accountDAO.updateAmt(retaccount);
@@ -66,7 +66,7 @@ public class AccountService {
 
     public Account withdrawByAccnt_no(Account account) throws notEnoughBalance{
 
-        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        Account retaccount = getAccountByaccnt_no(account);
         float balance = retaccount.getAmt();
         if(balance >= account.getAmt()){
             retaccount.setAmt(balance - account.getAmt());
@@ -78,7 +78,7 @@ public class AccountService {
 
     public void deleteAccountByAccnt_no(Account account){
 
-        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        Account retaccount = getAccountByaccnt_no(account);
         float balance = retaccount.getAmt();
         if(balance == 0.0){
             accountDAO.deleteAccountByAccnt_no(account);
