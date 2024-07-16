@@ -132,7 +132,8 @@ public class AccountController {
                     controlMap.put("Continue Loop", "false");
             }
         }
-        catch (InvalidEntry | notEnoughBalance | thereIsStillBalance | typeInvalidException | AccountSQLException e){
+        catch (InvalidEntry | notEnoughBalance | thereIsStillBalance | typeInvalidException | AccountSQLException |
+                AccountNotFound e){
             System.out.println(e.getMessage());
         }
     }

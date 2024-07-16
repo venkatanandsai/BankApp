@@ -1,9 +1,7 @@
 package com.revature.Service;
 
 import com.revature.Entity.Account;
-import com.revature.Exception.notEnoughBalance;
-import com.revature.Exception.thereIsStillBalance;
-import com.revature.Exception.typeInvalidException;
+import com.revature.Exception.*;
 import com.revature.Repository.AccountInterface;
 
 import java.util.List;
@@ -42,8 +40,11 @@ public class AccountService {
 
     public Account getAccountByaccnt_no(Account account){
 
-        return accountDAO.getAccountByAccnt_no(account);
-
+        Account retaccount = accountDAO.getAccountByAccnt_no(account);
+        if (retaccount.getAccnt_no() != 0){
+            return retaccount;
+        }
+        throw new AccountNotFound("Account not found. Please try again.");
     }
 
     public Account registerJointUser(Account account){
