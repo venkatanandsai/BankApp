@@ -133,7 +133,7 @@ public class AccountController {
             }
         }
         catch (InvalidEntry | notEnoughBalance | thereIsStillBalance | typeInvalidException | AccountSQLException |
-                AccountNotFound e){
+                AccountNotFound | UserNotFound e){
             System.out.println(e.getMessage());
         }
     }

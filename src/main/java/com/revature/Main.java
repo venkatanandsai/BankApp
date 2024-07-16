@@ -20,7 +20,7 @@ public class Main {
             UserDAO userDAO = new UserDAO();
             AccountDAO accountDAO = new AccountDAO();
             UserService userService = new UserService(userDAO);
-            AccountService accountService = new AccountService(accountDAO);
+            AccountService accountService = new AccountService(accountDAO, userService);
             UserController userController = new UserController(scanner, userService);
 
             Map<String, String> controlMap1 = new HashMap<>();

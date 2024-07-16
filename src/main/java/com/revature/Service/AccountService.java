@@ -9,12 +9,14 @@ import java.util.List;
 public class AccountService {
 
     private AccountInterface accountDAO;
+    private UserService userService;
 
-    public AccountService(AccountInterface accountDAO) {
+    public AccountService(AccountInterface accountDAO, UserService userService) {
         this.accountDAO = accountDAO;
+        this.userService = userService;
     }
 
-    public Account registerAccount(Account account){
+    public Account registerAccount(Account account) throws typeInvalidException{
         if(account.getType().equals("1")){
             String accnt_type = "CHECKING";
             float amt = 30.0f;
@@ -38,7 +40,7 @@ public class AccountService {
 
     }
 
-    public Account getAccountByaccnt_no(Account account){
+    public Account getAccountByaccnt_no(Account account) throws AccountNotFound{
 
         Account retaccount = accountDAO.getAccountByAccnt_no(account);
         if (retaccount.getAccnt_no() != 0){
@@ -49,9 +51,14 @@ public class AccountService {
 
     public Account registerJointUser(Account account){
 
-        accountDAO.updateCousername(account);
-        return getAccountByaccnt_no(account);
-
+        Account retaccount = getAccountByaccnt_no(account);
+        if(userService.checkUsername(account.getCoUsername())) {
+            if(retaccount.getAccnt_no() != 0) {
+                accountDAO.updateCousername(account);
+                return getAccountByaccnt_no(account);
+            }
+        }
+        throw new UserNotFound("Joint user does not exist");
     }
 
     public Account depositByAccnt_no(Account account){

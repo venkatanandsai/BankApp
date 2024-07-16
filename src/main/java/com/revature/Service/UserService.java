@@ -58,4 +58,14 @@ public class UserService {
         throw new LoginFail("Credentials are invalid. Please try again.");
 
     }
+
+    public boolean checkUsername(String username){
+        for(User user : userDAO.getAllUsers()){
+            boolean bool = user.getUsername().equalsIgnoreCase(username);
+            if (bool){
+                return true;
+            }
+        }
+        return false;
+    }
 }
